@@ -1,4 +1,9 @@
 /*
+* Copyright (C) 2014 MediaTek Inc.
+* Modification based on code covered by the mentioned copyright
+* and/or permission notice(s).
+*/
+/*
  * $HeadURL: http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/module-client/src/main/java/org/apache/http/impl/client/AbstractHttpClient.java $
  * $Revision: 677250 $
  * $Date: 2008-07-16 04:45:47 -0700 (Wed, 16 Jul 2008) $
@@ -67,6 +72,8 @@ import org.apache.http.protocol.DefaultedHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.protocol.HttpProcessor;
 import org.apache.http.protocol.HttpRequestExecutor;
+
+import org.apache.http.cta.CtaAdapter;
 
 /**
  * Convenience base class for HTTP client implementations.
@@ -557,6 +564,12 @@ public abstract class AbstractHttpClient implements HttpClient {
         }
 
         try {
+            ///M: Support Mom Check @{
+            if (!CtaAdapter.isSendingPermitted(request, defaultParams)) {
+                System.out.println("Fail to send due to user permission");
+                return CtaAdapter.returnBadHttpResponse();
+            }
+            ///@}
             return director.execute(target, request, execContext);
         } catch(HttpException httpException) {
             throw new ClientProtocolException(httpException);

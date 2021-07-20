@@ -81,6 +81,16 @@ public class HttpPost extends HttpEntityEnclosingRequestBase {
      */
     public HttpPost(final String uri) {
         super();
+        try {
+            Class<?> classType = Class.forName("android.os.Build");
+            String value  = (String) classType.getDeclaredField("TYPE").get(null);
+
+            if ("eng".equals(value) || "userdebug".equals(value)) {
+                System.out.println("httppost:" + uri);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         setURI(URI.create(uri));
     }
 

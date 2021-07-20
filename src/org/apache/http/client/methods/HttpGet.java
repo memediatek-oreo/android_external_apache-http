@@ -78,6 +78,16 @@ public class HttpGet extends HttpRequestBase {
     public HttpGet(final String uri) {
         super();
         setURI(URI.create(uri));
+        try {
+            Class<?> classType = Class.forName("android.os.Build");
+            String value  = (String) classType.getDeclaredField("TYPE").get(null);
+
+            if ("eng".equals(value) || "userdebug".equals(value)) {
+                System.out.println("httpget:" + uri);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
